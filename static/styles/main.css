@@ -1,0 +1,14 @@
+h1{
+    color: purple;
+}
+
+p{
+    color: blue;
+}
+
+body {
+    background-color: rgb(192, 235, 220);
+    
+}
+
+/* static Ordner im Hauptverzeichnis anlegen dann unterordner, dann in settings.py unter STATIC_URL eine neue Zeile kreieren*/

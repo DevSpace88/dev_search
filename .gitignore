@@ -1,4 +1,6 @@
 *db.sqlite3
 *migrations
+*__pycache__
+*pyc
 /static/images/
 /staticfiles/images/

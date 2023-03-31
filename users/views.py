@@ -7,7 +7,7 @@ from django.contrib import messages
 # from django.contrib.auth.forms import UserCreationForm # ähnlich wie eine ModelForm
 from .forms import CustomUserCreationForm, ProfileForm, SkillForm # statt UserCreationForm
 from .models import Profile
-from .utils import searchProfiles
+from .utils import searchProfiles, paginateProfiles
 
 
 # man sollte es nicht login() nennen, weil wir bereits eine solche Funktion importieren
@@ -107,7 +107,14 @@ def profiles(request):
     # aus utils, selbst erstellt Funktion, braucht request (gibt ja auch zwei Werte zurück)
     profiles, search_query = searchProfiles(request)
 
-    context = {'profiles': profiles, "search_query": search_query,}
+    custom_range, profiles = paginateProfiles(request, profiles, 1)
+
+    context = {
+        'profiles': profiles, 
+        "search_query": search_query,
+        "custom_range": custom_range,
+        
+        }
 
     return render(request, 'users/profiles.html', context)
 

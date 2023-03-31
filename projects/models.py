@@ -30,7 +30,10 @@ class Project(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
 
     def __str__(self):
-        return f'{self.title} {self.description}'
+        return self.title
+    
+    class Meta:
+        ordering = ['-created'] # ordnen nach neuesten
     
 # one to many
 class Review(models.Model):

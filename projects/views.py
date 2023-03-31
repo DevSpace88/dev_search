@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 # from django.db.models import Q
-from .utils import searchProjects
+from .utils import searchProjects, paginateProjects
 
 from .models import Project, Tag
 from .forms import ProjectForm
 from django.contrib.auth.decorators import login_required # einfach über jede View setzen, wo wir wollen, dass der User eingeloggt ist, um sie sehen zu können
+# from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+
 
 # projectsList = [
 #     {
@@ -60,10 +63,43 @@ def projects(request):
     # )
 
     projects, search_query = searchProjects(request)
+    custom_range, projects = paginateProjects(request, projects, 6)
+
+    # erste Seite der Ergebnisse
+    # page = 1
+
+    # jetzt in utils
+    # # damit wir das querien können, ala http://127.0.0.1:8000/projects/?page=1
+    # page = request.GET.get('page')
+
+    # results = 3 # 3 Ergebnisse per Seite
+    # paginator = Paginator(projects, results) # querying
+
+
+    # try:
+    #     projects = paginator.page(page)
+    # except PageNotAnInteger:    # wenn jemand keine Zahl eingibt als query
+    #     page = 1
+    #     projects = paginator.page(page)
+    # except EmptyPage:
+    #     page = paginator.num_pages # gibt uns einfach die letzte Seite, wenn der User eine Zahl eingibt, die es nicht gibt
+
+    # leftIndex = (int(page) -1) 
+
+    # if leftIndex < 1:
+    #     leftIndex = 1
+    
+    # rightIndex = (int(page) +2) # diese buttons die bisschen weiter sind etc.
+
+    # if rightIndex > paginator.num_pages:
+    #     rightIndex = paginator.num_pages +1
+
+    # custom_range = range(leftIndex, rightIndex)
     
     context = {
         'projects': projects,
         'search_query': search_query,
+        'custom_range': custom_range,
     }
 
     return render(request, 'projects/projects.html', context)

@@ -21,7 +21,7 @@ def loginUser(request):
 
     if request.method == 'POST':
         # print(request.POST)
-        username = request.POST['username']
+        username = request.POST['username'].lower() # username muss intern immer lowercase sein, damit sich das nicht überschneidet
         password = request.POST['password']
 
         # wir checken mit dem try, ob der User in der DB ist
@@ -38,7 +38,7 @@ def loginUser(request):
         if user is not None:
             # erstellt eine Session für den user in der DB, und fügt sie in die Cookies des Browser ein 
             login(request, user)
-            return redirect('profiles')
+            return redirect(request.GET['next'] if 'next' in request.GET else 'account')
         
         else:
             messages.error(request, 'Username or password is incorrect')

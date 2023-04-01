@@ -1,6 +1,14 @@
 *db.sqlite3
 *migrations
-*__pycache__
+
+
+# SQLite3 database files:
+*.db
+
+# Python bytecode:
+*.py[co]
+
+
 *pyc
 /static/images/
 /staticfiles/images/

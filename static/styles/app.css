@@ -641,7 +641,7 @@ img {
 .auth {
   width: 100%;
   position: relative;
-
+  z-index: 1;
   background: transparent;
   height: 99vh;
   display: flex;
@@ -844,4 +844,20 @@ img {
   color: var(--color-sub);
   margin-bottom: 1rem;
   margin-top: 2rem;
+}
+
+
+
+/*=======================
+  Fixed Position Alerts Wrapper
+========================*/
+
+.alert {
+  position: fixed;
+  left: 50%;
+  top: 120px;
+  transform: translate(-50%, -50%);
+
+
+  z-index: 99999;
 }

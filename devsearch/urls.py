@@ -24,7 +24,7 @@ from django.conf.urls.static import static # hilft uns eine url für unser stati
 urlpatterns = [
     path('admin/', admin.site.urls),
     # inkludiert urls aus app, muss oben importiert werden
-    path('projects', include('projects.urls')),
+    path('projects/', include('projects.urls')),
     path('', include('users.urls')),
 
 ]

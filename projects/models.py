@@ -33,7 +33,28 @@ class Project(models.Model):
         return self.title
     
     class Meta:
-        ordering = ['-created'] # ordnen nach neuesten
+        # ordering = ['-created'] # ordnen nach neuesten
+        ordering = ['-vote_ratio', '-vote_total', 'title'] # ordnen nach best bewerteten, wenn beide gleich sind zwischen zwei Projekten, wird das jenige weiter oben sein, dass mehr Votes hat, wenn immer noch gleich, dann wird nach titel sortiert
+
+    @property
+    def reviewers(self):
+        queryset = self.review_set.all().values_list('owner__id', flat=True) # single attribute of reviews, list of ids, but one single object with value of owner.id / flat konvertiert das von einem Objekt zu einer echten Liste
+        # gesamt gibt das eine Liste zurück mit Usern, die ein Projekt reviewed haben
+        return queryset
+
+    # Funktion um die votes zu zählen und sie in der db upzudaten, jedes mal wenn ein vote gesetzt wird
+    @property
+    def getVoteCount(self):
+        reviews = self.review_set.all()
+        upVotes = reviews.filter(value='up').count()
+        totalVotes = reviews.count()
+
+        ratio = (upVotes / totalVotes) * 100
+        self.vote_total = totalVotes
+        self.vote_ratio = ratio
+        self.save()
+
+
     
 # one to many
 class Review(models.Model):
@@ -42,7 +63,7 @@ class Review(models.Model):
         ('down', 'Down Vote'),
     )
 
-    # owner = 
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
 
     # on_delete = , was wollen wir machen, mit den DB-Kindern, wenn ein Project deleted wurde? SET_NULL, entfernt den eintrag nicht, aber alles wird genullt, also leer,
     # CASCADE löscht alle Reviews, wenn das Projekt gelöscht wurde
@@ -53,6 +74,12 @@ class Review(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
 
+    class Meta:
+        # wenn diese Kombination bereits existiert, kann sie nicht überschrieben werden
+        # django begriff
+        unique_together = [
+            ['owner', 'project'],
+        ]
 
     def __str__(self):
         return self.value

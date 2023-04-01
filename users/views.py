@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 # from django.db.models import Q # verschoben nach utils.py
 # from django.contrib.auth.forms import UserCreationForm # ähnlich wie eine ModelForm
-from .forms import CustomUserCreationForm, ProfileForm, SkillForm # statt UserCreationForm
-from .models import Profile
+from .forms import CustomUserCreationForm, ProfileForm, SkillForm, MessageForm # statt UserCreationForm
+from .models import Profile, Message
 from .utils import searchProfiles, paginateProfiles
 
 
@@ -107,7 +107,7 @@ def profiles(request):
     # aus utils, selbst erstellt Funktion, braucht request (gibt ja auch zwei Werte zurück)
     profiles, search_query = searchProfiles(request)
 
-    custom_range, profiles = paginateProfiles(request, profiles, 1)
+    custom_range, profiles = paginateProfiles(request, profiles, 6)
 
     context = {
         'profiles': profiles, 
@@ -228,3 +228,65 @@ def deleteSkill(request, pk):
     }
 
     return render(request, "delete_template.html", context)
+
+@login_required(login_url = 'login')
+def inbox(request):
+    profile = request.user.profile
+    # man sollte das nicht messages nennen, sonst gibts einen Konflikt
+    messageRequests = profile.messages.all()
+    unreadCount = messageRequests.filter(is_read=False).count()
+
+    context = {
+        'messageRequests': messageRequests, 
+        'unreadCount': unreadCount,
+    }
+    return render(request, 'users/inbox.html', context)
+
+@login_required(login_url = 'login')
+def viewMessage(request, pk):
+    profile = request.user.profile
+    message = profile.messages.get(id=pk)
+
+    # als read markieren nach dem ersten lesen
+    if message.is_read == False:
+        message.is_read = True
+        message.save()
+
+    context = {
+        'message': message,
+    }
+
+    return render(request, 'users/message.html', context)
+
+# später noch ändern, zur zeit kann jeder nachrichten senden
+def createMessage(request, pk):
+    recipient = Profile.objects.get(id=pk)
+    form = MessageForm()
+
+    try:
+        sender = request.user.profile
+    except:
+        sender = None
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = sender
+            message.recipient = recipient
+
+            if sender:
+                message.name = sender.name
+                message.email = sender.email
+
+            message.save()
+
+            messages.success(request, 'Your message was successfully sent.')
+
+            return redirect('user-profile', pk=recipient.id)
+
+    context = {
+        'recipient': recipient,
+        'form': form,
+    }
+    return render(request, 'users/message_form.html', context)

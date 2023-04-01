@@ -20,12 +20,12 @@ def paginateProfiles(request, profiles, results):
         page = paginator.num_pages 
         profiles = paginator.page(page)
 
-    leftIndex = (int(page) -2) 
+    leftIndex = (int(page) -4) 
 
     if leftIndex < 1:
         leftIndex = 1
     
-    rightIndex = (int(page) +3) 
+    rightIndex = (int(page) +5) 
 
     if rightIndex > paginator.num_pages:
         rightIndex = paginator.num_pages +1

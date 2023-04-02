@@ -10,6 +10,10 @@ from django.db.models.signals import post_save, post_delete
 # decorator, macht das selbe aber mit kürzere Syntax, 
 from django.dispatch import receiver
 
+# email
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 # receiver für signal
 # sender = model, das sendet
@@ -40,14 +44,28 @@ from django.dispatch import receiver
 # Wir erzeugen damit jedesmal ein Profil wenn ein User erzeugt wird, die verbunden sind
 # da oben ein OneToOne-Field zwischen Profile und User ist, wird das Profil automatishc gelöscht, wenn de ruser gelöscht wird
 def createProfile(sender, instance, created, **kwargs):
-   if created:
-       user = instance
-       profile = Profile.objects.create(
-           user= user,
-           username = user.username,
-           email = user.email,
-           name = user.first_name
+    if created:
+        user = instance
+        profile = Profile.objects.create(
+        user= user,
+        username = user.username,
+        email = user.email,
+        name = user.first_name
        )
+        
+        # send mail wenn creating profile
+        subject = 'Welcome to DevSearch'
+        message = 'We are glad you are here!'
+        
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [profile.email],
+            fail_silently=False,
+        )
+
+
 
 # edit 
 def updateUser(sender, instance, created, **kwargs):

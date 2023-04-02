@@ -20,12 +20,29 @@ from django.conf import settings # für MEDIA_ROOT und MEDIA_URL
 from django.conf.urls.static import static # hilft uns eine url für unser static file zu erstellen
 
 
+# authentication views (predefined class based views form django)
+from django.contrib.auth import views as auth_views
+
+
 # jede app, muss hie rinkludiert werden
 urlpatterns = [
     path('admin/', admin.site.urls),
     # inkludiert urls aus app, muss oben importiert werden
     path('projects/', include('projects.urls')),
     path('', include('users.urls')),
+
+    # naming muss so sein, da alles django predefined
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name="reset_password.html"),
+         name="reset_password"),
+
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="reset_password_sent.html"),
+         name="password_reset_done"),
+
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="reset.html"),
+         name="password_reset_confirm"),
+
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name="reset_password_complete.html"),
+         name="password_reset_complete"),
 
 ]
 

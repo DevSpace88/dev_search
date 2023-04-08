@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 # wir müssen serializer und model importieren!
 from .serializers import ProjectSerializer
-from projects.models import Project
+from projects.models import Project, Review
 
 
 
@@ -53,4 +53,27 @@ def getProject(request, pk):
     project = Project.objects.get(id=pk)
     serializer = ProjectSerializer(project, many=False)
   
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def projectVote(request, pk):
+    project = Project.objects.get(id=pk)
+    user = request.user.profile
+    data = request.data
+    
+    # review wird erstellt, wenn es nicht existiert, created is entweder True oder False
+    review, created = Review.objects.get_or_create(
+        owner = user,
+        project = project,
+    )
+
+    review.value = data['value']
+    review.save()
+
+    project.getVoteCount
+
+    serializer = ProjectSerializer(project, many=False)
+
     return Response(serializer.data)

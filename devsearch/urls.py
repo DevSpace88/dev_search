@@ -31,6 +31,9 @@ urlpatterns = [
     path('projects/', include('projects.urls')),
     path('', include('users.urls')),
 
+    # für rest api, jede route di emit apu anfängt, wird über api.urls gehandlet
+    path('api/', include('api.urls')),
+
     # naming muss so sein, da alles django predefined
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="reset_password.html"),
          name="reset_password"),

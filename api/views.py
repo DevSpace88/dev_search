@@ -1,12 +1,14 @@
 # from django.http import JsonResponse # wenn man es ohne rest_framework macht
 
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 # wir müssen serializer und model importieren!
 from .serializers import ProjectSerializer
 from projects.models import Project
+
 
 
 @api_view(['GET'])
@@ -30,7 +32,9 @@ def getRoutes(request):
 
 # wir können bei den api_views auch mehr als eine request-Methode verwenden also bspw. @api_view(['GET', 'POST',])
 @api_view(['GET'])
+# @permission_classes([IsAuthenticated]) # user müssen authenticated sein, damit si eZugriff darauf haben, ähnlihc wie login_required in django
 def getProjects(request):
+    print('USER:', request.user)
 
     # dann müssen wir unsere models queryen:
     projects = Project.objects.all()

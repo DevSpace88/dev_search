@@ -11,7 +11,7 @@ class Project(models.Model):
     description = models.TextField(null=True, blank=True)
 
     # für die Pics
-    featured_image = models.ImageField(null=True, blank=True, default="default.jpg")
+    featured_image = models.ImageField(null=False, blank=False, default="default.jpg")
 
     demo_link = models.CharField(max_length=2000, null=True, blank=True)
     source_link = models.CharField(max_length=2000, null=True, blank=True)
@@ -35,6 +35,16 @@ class Project(models.Model):
     class Meta:
         # ordering = ['-created'] # ordnen nach neuesten
         ordering = ['-vote_ratio', '-vote_total', 'title'] # ordnen nach best bewerteten, wenn beide gleich sind zwischen zwei Projekten, wird das jenige weiter oben sein, dass mehr Votes hat, wenn immer noch gleich, dann wird nach titel sortiert
+
+    # in case user deletes default project image, which can't happen anymore since I set blank and null to False
+    @property
+    def imageURL(self):
+        try:
+            url = self.featured_image.url
+        except:
+            url = ''
+        return url
+
 
     @property
     def reviewers(self):

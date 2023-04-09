@@ -42,6 +42,7 @@ class Profile(models.Model):
     class Meta:
         ordering = ['created']
 
+    # in case user deletes default user image
     @property
     def imageURL(self):
         try:

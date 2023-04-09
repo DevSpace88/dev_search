@@ -149,8 +149,9 @@ def createProject(request):
     form = ProjectForm()
 
     if request.method == 'POST':
-         # print(request.POST['description']) # da POST ein dictionary ist, können wir di eeinzelnen Schlüssel zugreifen
-         # request.FILES, muss rein, wenn wir Bilder hochladen wollen, über die Form/ oder Dateien
+        # print(request.POST['description']) # da POST ein dictionary ist, können wir di eeinzelnen Schlüssel zugreifen
+        # request.FILES, muss rein, wenn wir Bilder hochladen wollen, über die Form/ oder Dateien
+        newtags = request.POST.get('newtags').replace(',', " ").split()
         form = ProjectForm(request.POST, request.FILES)
        
         if form.is_valid():
@@ -158,6 +159,12 @@ def createProject(request):
             project = form.save(commit=False)
             project.owner = profile
             project.save()
+
+            for tag in newtags:
+                # wenn der tag noch nciht da ist, wird er erzeugt
+                tag, created = Tag.objects.get_or_create(name=tag)
+                project.tags.add(tag)
+                
             return redirect('account')
 
     context = { 'form': form }

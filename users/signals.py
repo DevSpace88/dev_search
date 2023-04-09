@@ -82,8 +82,11 @@ def updateUser(sender, instance, created, **kwargs):
 # Wenn ein Admin ein Profil löscht, bleibt der User, deswegen hier die Funktion
 # damit wird also auch der User ds Profils gelöscht, wenn das Profil gelöscht wird
 def deleteUser(sender, instance, **kwargs):
-    user = instance.user
-    user.delete()
+    try:
+        user = instance.user
+        user.delete()
+    except:
+        pass
 
 
 post_save.connect(createProfile, sender=User)

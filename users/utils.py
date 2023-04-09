@@ -7,7 +7,7 @@ def paginateProfiles(request, profiles, results):
 
     page = request.GET.get('page')
 
-    results =  3 # wir passen results in der view, weswegen dass dynamisch ist
+    # results =  3 # wir passen results in der view, weswegen dass dynamisch ist
     paginator = Paginator(profiles, results) 
 
 

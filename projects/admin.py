@@ -5,7 +5,7 @@ from .models import Project, Review, Tag
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description')
+    list_display = ('title', 'description', 'owner')
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('project', 'value')

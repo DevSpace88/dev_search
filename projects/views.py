@@ -174,12 +174,23 @@ def updateProject(request, pk):
     form = ProjectForm(instance=project)
 
     if request.method == 'POST':
+        # remove comma before submitting
+        newtags = request.POST.get('newtags').replace(',', " ").split()
+        # print("DATA:", newtags)
+        
+            
+
          # print(request.POST['description']) # da POST ein dictionary ist, können wir di eeinzelnen Schlüssel zugreifen
          # auch hier muss request.FILES rien, wenn wir Bilder updaten wollen
         form = ProjectForm(request.POST, request.FILES, instance=project)
        
         if form.is_valid():
-            form.save()
+            # form.save()
+            project = form.save()
+            for tag in newtags:
+                # wenn der tag noch nciht da ist, wird er erzeugt
+                tag, created = Tag.objects.get_or_create(name=tag)
+                project.tags.add(tag)
             return redirect('account')
 
     context = { 'form': form }

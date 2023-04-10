@@ -1,4 +1,4 @@
-# A complete Website with:
+# A complete Website made in Python Django with following features:
 
     - Registering an account
     - Login

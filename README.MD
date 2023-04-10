@@ -1,4 +1,4 @@
-A complete Website with:
+# A complete Website with:
 
     - Registering an account
     - Login
@@ -14,3 +14,34 @@ A complete Website with:
     - searching Projects
     - searching Users
     - Pagination
+
+
+# Install requirements with:
+
+`
+pip install -r requirements.txt
+`
+
+# Makemigrations:
+
+`
+./manage.py makemigrations
+`
+
+# Migrate:
+`
+./manage.py migrate
+`
+
+# Create Admin
+
+`
+./manage.py createsuperuser 
+`
+
+
+# Start local testserver:
+
+`
+./manage.py runserver
+`

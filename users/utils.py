@@ -3,13 +3,8 @@ from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 def paginateProfiles(request, profiles, results):
-    # wir passen die Paginator View also einfach an, und auch die props die wir an die include in der template übergeben
-
     page = request.GET.get('page')
-
-    # results =  3 # wir passen results in der view, weswegen dass dynamisch ist
     paginator = Paginator(profiles, results) 
-
 
     try:
         profiles = paginator.page(page)
@@ -35,9 +30,7 @@ def paginateProfiles(request, profiles, results):
     return custom_range, profiles
 
 def searchProfiles(request):
-
     search_query = ''
-
  
     if request.GET.get('search_query'):
         search_query = request.GET.get('search_query')

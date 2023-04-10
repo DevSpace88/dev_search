@@ -15,26 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings 
+from django.conf.urls.static import static 
 
-from django.conf import settings # für MEDIA_ROOT und MEDIA_URL
-from django.conf.urls.static import static # hilft uns eine url für unser static file zu erstellen
 
-
-# authentication views (predefined class based views form django)
+# authentication views (predefined class based views from django)
 from django.contrib.auth import views as auth_views
 
-
-# jede app, muss hie rinkludiert werden
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # inkludiert urls aus app, muss oben importiert werden
     path('projects/', include('projects.urls')),
     path('', include('users.urls')),
 
-    # für rest api, jede route di emit apu anfängt, wird über api.urls gehandlet
     path('api/', include('api.urls')),
 
-    # naming muss so sein, da alles django predefined
+    # django predefined naming
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="reset_password.html"),
          name="reset_password"),
 
@@ -49,6 +44,5 @@ urlpatterns = [
 
 ]
 
-# wir müssen für die images auch einen path eintragen!
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

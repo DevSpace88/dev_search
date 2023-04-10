@@ -15,34 +15,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-# receiver für signal
-# sender = model, das sendet
-# instance = Instanz des models, das es triggert
-# created = True oder False, ob das model/also der User zu den Models hinzugefügt wurde, also ob es einen neuen Eintrag in der DB gibt
-# **kwargs = ist wohl immer hier drin
-
-
-# decorator statt untere Funktionen
-# @receiver(post_save, sender=Profile)
-# def profileUpdated(sender, instance, created, **kwargs):
-#     print('Profile saved!', sender)
-#     print('Instance:', instance)
-#     print('Created:', created)
-
-# @receiver(post_delete, sender=Profile)
-# def deleteUser(sender, instance, **kwargs):
-#     print('Deleted User')
-
-# die Funktion wird hier als Argument übergeben, als auch das model, das sendet
-# haben wir auskommentiert, weil wir jetzt stattdessen die decorators verwenden
-
-# post_save.connect(profileUpdated, sender=Profile)
-# post_delete.connect(deleteUser, sender=Profile)
-
-
-
-# Wir erzeugen damit jedesmal ein Profil wenn ein User erzeugt wird, die verbunden sind
-# da oben ein OneToOne-Field zwischen Profile und User ist, wird das Profil automatishc gelöscht, wenn de ruser gelöscht wird
 def createProfile(sender, instance, created, **kwargs):
     if created:
         user = instance
@@ -53,7 +25,6 @@ def createProfile(sender, instance, created, **kwargs):
         name = user.first_name
        )
         
-        # send mail wenn creating profile
         subject = 'Welcome to DevSearch'
         message = 'We are glad you are here!'
         
@@ -65,12 +36,9 @@ def createProfile(sender, instance, created, **kwargs):
             fail_silently=False,
         )
 
-
-
-# edit 
 def updateUser(sender, instance, created, **kwargs):
     profile = instance
-    user = profile.user # one to one relation machts möglich, so wie request.user etc
+    user = profile.user
     
     if created == False:
         user.first_name = profile.name
@@ -78,16 +46,12 @@ def updateUser(sender, instance, created, **kwargs):
         user.email = profile.email
         user.save()
 
-
-# Wenn ein Admin ein Profil löscht, bleibt der User, deswegen hier die Funktion
-# damit wird also auch der User ds Profils gelöscht, wenn das Profil gelöscht wird
 def deleteUser(sender, instance, **kwargs):
     try:
         user = instance.user
         user.delete()
     except:
         pass
-
 
 post_save.connect(createProfile, sender=User)
 post_save.connect(updateUser, sender=Profile)

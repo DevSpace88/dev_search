@@ -15,17 +15,17 @@
             {% endfor %}
           </div>
 
-          {% if "http" in project.source_link %}
+          {% if project.source_link and "http" in project.source_link %}
             <a class="singleProject__liveLink" href="{{project.source_link}}" target="_blank"><i class="im im-external-link"></i>Source Code
             </a>
-          {% else %}
+          {% elif project.source_link %}
             <a class="singleProject__liveLink" href="http://{{project.source_link}}" target="_blank"><i class="im im-external-link"></i>Source Code
             </a>
           {% endif %}
-          {% if "http" in project.demo_link %}
+          {% if project.demo_link and "http" in project.demo_link %}
             <a class="singleProject__liveLink" href="{{project.demo_link}}" target="_blank"><i class="im im-external-link"></i>Live Demo
             </a>
-          {% else %}
+          {% elif project.source_link %}
             <a class="singleProject__liveLink" href="http://{{project.demo_link}}" target="_blank"><i class="im im-external-link"></i>Live Demo
             </a>
           {% endif %}

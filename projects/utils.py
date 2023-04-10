@@ -6,20 +6,20 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 def paginateProjects(request, projects, results):
 
 
-    # damit wir das querien können, ala http://127.0.0.1:8000/projects/?page=1
+    # querying like http://127.0.0.1:8000/projects/?page=1
     page = request.GET.get('page')
 
-    # results = 3 # 3 Ergebnisse per Seite/  # wir passen results in der view, weswegen dass dynamisch ist -> comment
-    paginator = Paginator(projects, results) # querying
+    # results = 3
+    paginator = Paginator(projects, results) 
 
 
     try:
         projects = paginator.page(page)
-    except PageNotAnInteger:    # wenn jemand keine Zahl eingibt als query
+    except PageNotAnInteger:
         page = 1
         projects = paginator.page(page)
     except EmptyPage:
-        page = paginator.num_pages # gibt uns einfach die letzte Seite, wenn der User eine Zahl eingibt, die es nicht gibt
+        page = paginator.num_pages
         projects = paginator.page(page)
 
     leftIndex = (int(page) -2) 
@@ -27,7 +27,7 @@ def paginateProjects(request, projects, results):
     if leftIndex < 1:
         leftIndex = 1
     
-    rightIndex = (int(page) +3) # wie weit die buttons neben dem button für die aktuelle Seite gehen
+    rightIndex = (int(page) +3)
 
     if rightIndex > paginator.num_pages:
         rightIndex = paginator.num_pages +1
@@ -52,7 +52,7 @@ def searchProjects(request):
     projects = Project.objects.distinct().filter(
         Q(title__icontains=search_query) |
         Q(description__icontains=search_query) |
-        Q(owner__name__icontains=search_query) |# geht eine Ebene höher, gibt uns jeden Namen vom Owner der beinhaltet
+        Q(owner__name__icontains=search_query) |
         Q(tags__in=tags)
 
     )

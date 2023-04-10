@@ -7,14 +7,13 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-# simple-jwt ist für sog. refresh-token, die länger als 5 Minuten halten
 
 urlpatterns = [
     path('users/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('users/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('', views.getRoutes),
-    path('projects/', views.getProjects), # wird dann zu /api/projects
+    path('projects/', views.getProjects),
     path('projects/<str:pk>', views.getProject),
     path('projects/<str:pk>/vote/', views.projectVote),
 

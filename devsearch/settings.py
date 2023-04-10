@@ -32,8 +32,6 @@ DEBUG = True
 ALLOWED_HOSTS = [ 'localhost', '127.0.0.1']
 
 
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -194,22 +192,16 @@ EMAIL_HOST_PASSWORD = '###' # in env variable setzen
 
 STATIC_URL = '/static/'
 
-# müssen wir ebenfalls selbst einfügen, für useruploads, damit django weiß welche Addresse, be default ist es ein leerer String
 MEDIA_URL = '/images/'
 
-# das müssen wir selbst hinzufügen
+
 STATICFILES_DIRS = [
-    # os.path.join(BASE_DIR, 'static') #alte Version
-    BASE_DIR / 'static' # neue Version
+    BASE_DIR / 'static'
 ]
 
-# Das hier erstellen wir, damit hochgeladen Bilder, wo anders gespiechert werden als im root, keine Liste!!!!
 MEDIA_ROOT = BASE_DIR/ os.path.join(BASE_DIR, 'static/images')
 
-# Wo unsere staticfiles in production sien werden
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# collectstatic nimmt alle files aus static und bundlet sie in eine Datei und schiebt sie in staticfiles aufdem server
 
 
 # Default primary key field type

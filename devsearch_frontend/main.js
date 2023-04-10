@@ -56,8 +56,6 @@ let buildProjects = (projects) => {
     }
 
     addVoteEvents()
-
-    //Add an listener
 }
 
 let addVoteEvents = () => {

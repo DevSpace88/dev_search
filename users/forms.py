@@ -12,13 +12,8 @@ class CustomUserCreationForm(UserCreationForm):
             'first_name': 'Name',
         }
 
-         # Wir überschreiben dne Konstruktor
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
-
-        # # so überschreiben wir Form-Elemente, in dem Fall die class, einzeln, kann man für jedes Field machen
-        # self.fields['title'].widget.attrs.update({'class': 'input', 'placeholder': 'Add Title'})
-        # damit können wir halt CSS wieder darauf anwenden, ist mega!!!!!
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})

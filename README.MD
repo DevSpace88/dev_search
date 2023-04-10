@@ -14,6 +14,7 @@
     - searching Projects
     - searching Users
     - Pagination
+    - REST API
 
 
 ## Install requirements with:

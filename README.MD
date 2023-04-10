@@ -16,31 +16,31 @@
     - Pagination
 
 
-# Install requirements with:
+## Install requirements with:
 
 `
 pip install -r requirements.txt
 `
 
-# Makemigrations:
+## Makemigrations:
 
 `
 ./manage.py makemigrations
 `
 
-# Migrate:
+## Migrate:
 `
 ./manage.py migrate
 `
 
-# Create Admin
+## Create Admin
 
 `
 ./manage.py createsuperuser 
 `
 
 
-# Start local testserver:
+## Start local testserver:
 
 `
 ./manage.py runserver

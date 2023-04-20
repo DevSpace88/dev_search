@@ -178,13 +178,13 @@ USE_TZ = True
 CORS_ALLOW_ALL_ORIGINS = True
 
 # email
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com' # evtl auch 
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = '###'
-EMAIL_HOST_PASSWORD = '###' # in env variable setzen
+# define in env variables
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = '###'
+# EMAIL_PORT = ###
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = '###'
+# EMAIL_HOST_PASSWORD = '###'
 
 
 # Static files (CSS, JavaScript, Images)
